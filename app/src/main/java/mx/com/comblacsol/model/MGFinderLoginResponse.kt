@@ -1,0 +1,31 @@
+package mx.com.comblacsol.model
+
+data class MGFinderLoginResponse(
+    val apellidomaterno: String,
+    val apellidopaterno: String,
+    val calle: String,
+    val celular: String,
+    val email: String,
+    val empresa: String,
+    val fechainactivo: String,
+    val fechanacimiento: String,
+    val genero: String,
+    val idcliente: Int,
+    val idempresa: Int,
+    val idlocalidad: Int,
+    val nombre: String,
+    val numcontactoemergencia: Int,
+    val numcontactorobo: Int,
+    val numcontrato: String,
+    val numext: String,
+    val numint: String,
+    val password: String,
+    val permitido: Boolean,
+    val razonsocial: String,
+    val referencia: String,
+    val representantelegal: String,
+    val rfc: String,
+    val status: String,
+    val telefono2: String,
+    val tipo: String
+)

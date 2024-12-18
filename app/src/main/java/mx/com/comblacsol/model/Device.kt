@@ -1,0 +1,77 @@
+package mx.com.comblacsol.model
+
+import com.google.gson.annotations.SerializedName
+import java.util.Date
+
+data class Device(
+    @SerializedName("parser") val parser: String,
+    @SerializedName("accountID") val accountID: String,
+    @SerializedName("event") val event: String,
+    @SerializedName("deviceID") val deviceID: String,
+    @SerializedName("gps_accuray") val gpsAccuray: String,
+    @SerializedName("speed") val speed: Int,
+    @SerializedName("azimuth") val azimuth: Int,
+    @SerializedName("altitude") val altitude: Int,
+    @SerializedName("latitude") val latitude: Double,
+    @SerializedName("longitude") val longitude: Double,
+    @SerializedName("gpsTime") val gpsTime: String,
+    @SerializedName("mcc") val mcc: String,
+    @SerializedName("mnc") val mnc: String,
+    @SerializedName("lac") val lac: String,
+    @SerializedName("cellid") val cellid: String,
+    @SerializedName("mileage") val mileage: String,
+    @SerializedName("hourMeterCount") val hourMeterCount: String,
+    @SerializedName("input1") val input1: String,
+    @SerializedName("input2") val input2: String,
+    @SerializedName("backupBatteryPer") val backupBatteryPer: String,
+    @SerializedName("deviceStatus") val deviceStatus: String,
+    @SerializedName("engineRPM") val engineRPM: String,
+    @SerializedName("fuel_consumption") val fuelConsumption: String,
+    @SerializedName("fuel_level") val fuelLevel: String,
+    @SerializedName("sendTime") val sendTime: String,
+    @SerializedName("countNumber") val countNumber: String,
+    @SerializedName("userLocalTime") val userLocalTime: String,
+    @SerializedName("userLocalTimeFormat") val userLocalTimeFormat: String,
+    @SerializedName("address") val address: String,
+    @SerializedName("last_report_dif_day") val lastReportDifDay: Int,
+    @SerializedName("last_report_dif_hora") val lastReportDifHora: Int,
+    @SerializedName("last_report_dif_minute") val lastReportDifMinute: Int,
+    @SerializedName("nombre_vehiculo") val nombreVehiculo: String,
+    @SerializedName("nombre_conductor") val nombreConductor: String,
+    @SerializedName("graphic_event") val graphicEvent: String,
+    @SerializedName("path_imagen") val pathImagen: String,
+    @SerializedName("bloqueo_por_morosidad") val bloqueoPorMorosidad: Int,
+    @SerializedName("usuario") val usuario: String,
+    @SerializedName("group_device") val groupDevice: String,
+    @SerializedName("posicion_detenido") val posicionDetenido: String,
+    @SerializedName("alert") val alert: String,
+    @SerializedName("localDate") val localDate: String,
+    @SerializedName("userLocalTime_id") val userLocalTimeId: String,
+    @SerializedName("total_minutes") val totalMinutes: Int,
+    @SerializedName("status_vehicule") val statusVehicule: String,
+    @SerializedName("status_alert") val statusAlert: String,
+    @SerializedName("nombre_cliente") val nombreCliente: String,
+    @SerializedName("movilAlOperador") val movilAlOperador: String,
+    @SerializedName("claveAmago") val claveAmago: String,
+    @SerializedName("path_img_cmd") val pathImgCmd: String,
+    @SerializedName("name_hdw_cmd") val nameHdwCmd: String,
+    @SerializedName("admin_client") val adminClient: String,
+    @SerializedName("icon_alert") val iconAlert: String,
+    @SerializedName("deviceID_asignado") val deviceIDAsignado: String,
+    @SerializedName("type_device") val typeDevice: String,
+    @SerializedName("listGroups") val listGroups: String,
+    @SerializedName("listTypeDevice") val listTypeDevice: String,
+    @SerializedName("listDevices") val listDevices: String,
+    @SerializedName("nombreOperador") val nombreOperador: String,
+    @SerializedName("userLocalTimeDate") val userLocalTimeDate: Date,
+    @SerializedName("selected") val selected: Boolean,
+    @SerializedName("idasignacionserviciogps") val idAsignacionServicioGps: Int,
+    @SerializedName("idasignacionservicio") val idAsignacionServicio: Int,
+    @SerializedName("tipo") val tipo: String
+)
+
+
+
+data class GetDevicesResponse(
+    val eventos: List<Device>
+)

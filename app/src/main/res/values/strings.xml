@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BlacSol</string>
+    <string name="spref">mx.com.comblacsol.spref</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="title_activity_mis_unidades">MisUnidadesActivity</string>
+    <string name="title_activity_historial_movimiento">HistorialMovimientoActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_mi_vehiculo">MiVehiculoActivity</string>
+    <string name="title_activity_geocerca">GeocercaActivity</string>
+    <string name="title_activity_menu_geocerca">MenuGeocercaActivity</string>
+    <string name="title_activity_mis_geocercas">MisGeocercasActivity</string>
+</resources>
