@@ -10,15 +10,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -42,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -110,31 +114,30 @@ class MisUnidadesActivity : ComponentActivity() {
             filteredList = lstUnidades
         }
         Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)) {
-                Spacer(modifier = Modifier.height(12.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(top = 48.dp)
+            ) {
+                Spacer(modifier = Modifier.height(48.dp))
                 Text(
                     text = "Mis unidades",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Normal,
                         fontFamily = gilroy,
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                        color = Color.Black
                     ),
-                    modifier = Modifier
-                        .padding(16.dp)
-
+                    modifier = Modifier.padding(16.dp)
                 )
 
-                // Barra de búsqueda
                 OutlinedTextField(
                     value = searchText,
-                    onValueChange = {searchText = it },
+                    onValueChange = { searchText = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    placeholder = {
-                        Text(text = "Buscar unidad")
-                    },
+                    placeholder = { Text(text = "Buscar unidad") },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -146,14 +149,12 @@ class MisUnidadesActivity : ComponentActivity() {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Lista de tarjetas
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .weight(1f) // Permite que la lista ocupe todo el espacio disponible
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     items(filteredList) { unidad ->
-                        Log.d("Unidad", unidad.userLocalTime)
                         StatusCard(
                             code = unidad.nombre_vehiculo,
                             dateTime = unidad.userLocalTime,
@@ -161,19 +162,13 @@ class MisUnidadesActivity : ComponentActivity() {
                             location = unidad.address,
                             speed = unidad.speed,
                             onStatusCardClick = {
-                                Intent(this@MisUnidadesActivity,MapsActivity::class.java).also {
-                                    it.putExtra("latitud",unidad.latitude)
-                                    it.putExtra("longitud",unidad.longitude)
-                                    it.putExtra("code",unidad.nombre_vehiculo)
-                                    it.putExtra("dateTime",unidad.userLocalTime)
-                                    Log.d("Status", unidad.status_vehicule)
-                                    Log.d("Status", unidad.speed)
-                                    if(unidad.status_vehicule == "STOPPED") {
-                                        it.putExtra("status", unidad.status_vehicule)
-                                    }else{
-                                        it.putExtra("status", unidad.speed+"Km/h")
-                                    }
-                                    it.putExtra("location",unidad.address)
+                                Intent(this@MisUnidadesActivity, MapsActivity::class.java).also {
+                                    it.putExtra("latitud", unidad.latitude)
+                                    it.putExtra("longitud", unidad.longitude)
+                                    it.putExtra("code", unidad.nombre_vehiculo)
+                                    it.putExtra("dateTime", unidad.userLocalTime)
+                                    it.putExtra("status", if (unidad.status_vehicule == "STOPPED") unidad.status_vehicule else "${unidad.speed} Km/h")
+                                    it.putExtra("location", unidad.address)
                                     sharedPreferences.edit().putString("deviceId", unidad.deviceID).apply()
                                     startActivity(it)
                                 }
@@ -183,21 +178,67 @@ class MisUnidadesActivity : ComponentActivity() {
                     }
                 }
 
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 56.dp, end = 16.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    FloatingActionButton(
+                        onClick = {
+                            Intent(this@MisUnidadesActivity, PrincipalActivity::class.java).also {
+                                startActivity(it)
+                            }
+                        },
+                        modifier = Modifier.padding(end = 16.dp), // Espaciado entre botones
+                        shape = CircleShape,
+                        containerColor = Color.Black
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "Inicio",
+                            tint = Color.White
+                        )
+                    }
+
+                    FloatingActionButton(
+                        onClick = {
+                            Intent(
+                                this@MisUnidadesActivity,
+                                MisGeocercasActivity::class.java
+                            ).also {
+                                startActivity(it)
+                            }
+                        },
+                        modifier = Modifier, // Sin `size(48.dp)` para que use el tamaño por defecto (56.dp)
+                        shape = CircleShape,
+                        containerColor = Color.Black
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.fence),
+                            contentDescription = "Geocercas",
+                            modifier = Modifier
+                                .size(48.dp)
+                                .padding(12.dp),
+
+                            tint = Color.White
+                        )
+                    }
+                }
+
+
+
+
             }
 
-            // Botón de WhatsApp
+            // Ícono de Home flotante
 
 
 
-            // Ícono de Home
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "Inicio",
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)
-            )
         }
+
+
     }
 
 

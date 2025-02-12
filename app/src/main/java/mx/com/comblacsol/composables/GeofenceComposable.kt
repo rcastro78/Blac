@@ -96,6 +96,10 @@ fun CircularGeofenceScreen(token:String,
     var circleRadius by remember { mutableStateOf(500.0) } // Radio inicial
     var nombreLimite by remember { mutableStateOf("") }
     var descripcionLimiteVirtual by remember { mutableStateOf("") }
+
+
+
+
     LaunchedEffect(true) {
         if (ActivityCompat.checkSelfPermission(
                 context,

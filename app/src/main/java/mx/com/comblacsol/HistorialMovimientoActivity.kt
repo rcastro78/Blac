@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -120,7 +126,7 @@ class HistorialMovimientoActivity : ComponentActivity() {
             // Mueve la cámara al primer punto si la lista no está vacía
             if (puntos.value.isNotEmpty()) {
                 cameraPositionState.animate(
-                    CameraUpdateFactory.newLatLngZoom(puntos.value.first(), 12f)
+                    CameraUpdateFactory.newLatLngZoom(puntos.value.first(), 7f)
                 )
             }
         }
@@ -128,16 +134,19 @@ class HistorialMovimientoActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(12.dp)
+                .background(Color.White)
+                .padding(top = 48.dp, end = 12.dp, start = 12.dp)
         ) {
             // Cabecera
             Spacer(modifier = Modifier.height(12.dp))
-            Row(modifier = Modifier.weight(0.2f)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.125f), // Ocupar 17.5% del espacio
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -145,7 +154,7 @@ class HistorialMovimientoActivity : ComponentActivity() {
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Normal,
                             fontFamily = gilroy,
-                            color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                            color = Color.Black
                         ),
                         modifier = Modifier.padding(16.dp)
                     )
@@ -153,7 +162,13 @@ class HistorialMovimientoActivity : ComponentActivity() {
             }
 
             // Selección de fecha
-            Row(modifier = Modifier.weight(0.1f)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.125f), // Otro 17.5%
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
                 val context = LocalContext.current
                 val calendario = Calendar.getInstance()
                 val datePickerDialog = DatePickerDialog(
@@ -165,22 +180,16 @@ class HistorialMovimientoActivity : ComponentActivity() {
                         val f = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(nuevaFecha.time)
                         val fechaInicio = "${f}000000"
                         val fechaFin = "${f}235959"
-                        Log.d("fechaInicio", fechaInicio)
-                        Log.d("fechaFin", fechaFin)
-                        // Llamar al ViewModel con la nueva fecha
-                        val getHistoVehicleRequest = GetHistoVehicleRequest(
-                            usuario,
-                            fechaInicio,
-                            fechaFin,
-                            deviceId
-                        )
 
-                        historialMovimientoViewModel.getHistorialDispositivo(token, getHistoVehicleRequest,
+                        historialMovimientoViewModel.getHistorialDispositivo(
+                            token,
+                            GetHistoVehicleRequest(usuario, fechaInicio, fechaFin, deviceId),
                             onRenewToken = {
                                 Intent(this@HistorialMovimientoActivity, MainActivity::class.java).also {
                                     startActivity(it)
                                 }
-                            })
+                            }
+                        )
 
                     },
                     calendario.get(Calendar.YEAR),
@@ -188,55 +197,46 @@ class HistorialMovimientoActivity : ComponentActivity() {
                     calendario.get(Calendar.DAY_OF_MONTH)
                 )
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = fechaSeleccionada,
-                        style = MaterialTheme.typography.bodySmall,
+                Text(
+                    text = fechaSeleccionada,
+                    style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Normal,
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black,
                         fontFamily = gilroy,
-
-                        modifier = Modifier
-                            .clickable { datePickerDialog.show() }
-                            .background(Color.LightGray)
-                            .padding(4.dp)
-                            .clip(RoundedCornerShape(12.dp))
-
-
-
-                    )
-                }
+                        color = Color.Black
+                    ),
+                    modifier = Modifier
+                        .clickable { datePickerDialog.show() }
+                        .background(Color.LightGray, RoundedCornerShape(12.dp))
+                        .padding(horizontal = 16.dp, vertical = 8.dp) // Ajuste de padding
+                )
             }
 
             // Mapa
-            Row(modifier = Modifier.weight(0.7f)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.55f) // Ocupar el 65% restante
+            ) {
                 GoogleMap(
                     modifier = Modifier.fillMaxSize(),
                     cameraPositionState = cameraPositionState
                 ) {
-
                     historial.forEachIndexed { index, evento ->
                         if (index < puntos.value.size) {
                             val punto = puntos.value[index]
                             val icon = when (index) {
-                                0 -> BitmapDescriptorFactory.fromResource(R.drawable.start_race) // Drawable para el inicio
-                                puntos.value.size - 1 -> BitmapDescriptorFactory.fromResource(R.drawable.finish) // Drawable para el final
-                                else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED) // Marcador estándar
+                                0 -> BitmapDescriptorFactory.fromResource(R.drawable.start_race)
+                                puntos.value.size - 1 -> BitmapDescriptorFactory.fromResource(R.drawable.finish)
+                                else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
                             }
                             Marker(
                                 state = MarkerState(position = punto),
-                                title = "Evento: ${evento.event}",  // Título corto
-                                snippet = "Fecha: ${evento.userLocalTimeFormat} a ${evento.speed} Km/h",  // Añadir más información
+                                title = "Evento: ${evento.event}",
+                                snippet = "Fecha: ${evento.userLocalTimeFormat} a ${evento.speed} Km/h",
                                 icon = icon
                             )
                         }
                     }
-                    // Dibujar la polilínea si hay más de un punto
                     if (puntos.value.size > 1) {
                         Polyline(
                             points = puntos.value,
@@ -247,10 +247,32 @@ class HistorialMovimientoActivity : ComponentActivity() {
                 }
             }
 
-            Row(modifier = Modifier.weight(0.1f)) {
-                // Espacio adicional si se necesita
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f), // Otro 17.5%
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                FloatingActionButton(onClick = {
+                    Intent(this@HistorialMovimientoActivity, PrincipalActivity::class.java).also {
+                        startActivity(it)
+                    }
+                }, modifier = Modifier, // Sin `size(48.dp)` para que use el tamaño por defecto (56.dp)
+                    shape = CircleShape,
+                    containerColor = Color.Black) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.home),
+                        contentDescription = "Home",
+                        modifier = Modifier.size(48.dp)
+                            .padding(12.dp),
+                        tint = Color.White
+
+                    )
+                }
             }
         }
+
     }
 
 

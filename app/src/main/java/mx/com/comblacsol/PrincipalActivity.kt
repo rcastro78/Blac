@@ -87,14 +87,14 @@ class PrincipalActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(Color.White)
                 .padding(12.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(92.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.1f)
+                    .weight(0.125f)
             ) {
                 Column(
                     modifier = Modifier
@@ -109,7 +109,7 @@ class PrincipalActivity : ComponentActivity() {
                         fontFamily = gilroy,
                         fontWeight = FontWeight.Medium,
                         fontSize = 24.sp,
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                        color = Color.Black
                     )
                 }
 
@@ -150,7 +150,7 @@ class PrincipalActivity : ComponentActivity() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.1f)
+                    .weight(0.125f)
             ) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
@@ -174,7 +174,7 @@ class PrincipalActivity : ComponentActivity() {
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Bold,
                             fontFamily = gilroy,
-                            color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                            color = Color.Black
                         ),
                         modifier = Modifier
                             .padding(4.dp)
@@ -188,7 +188,7 @@ class PrincipalActivity : ComponentActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp)
-                    .weight(0.875f)
+                    .weight(0.75f)
             ) {
                 item {
                     LocalizaMiVehiculoComposable(onItemClick = {
@@ -198,7 +198,7 @@ class PrincipalActivity : ComponentActivity() {
                     })
                 }
 
-                item {
+                /*item {
                     Spacer(modifier = Modifier.height(12.dp))
                     LimitesVirtualesComposable(onItemClick = {
                         Intent(this@PrincipalActivity, MisGeocercasActivity::class.java).also {
@@ -214,7 +214,7 @@ class PrincipalActivity : ComponentActivity() {
                             startActivity(it)
                         }
                     })
-                }
+                }*/
             }
         }
     }

@@ -127,7 +127,9 @@ fun StatusCard(
 
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardColors(Color.White,Color.White, Color.White, Color.White),
+        colors =  if(isSystemInDarkTheme()) CardColors(Color.White,Color.White, Color.White, Color.White)
+        else
+            CardColors(Color.White,Color.Black, Color.White, Color.White),
         modifier = Modifier
             .height(120.dp)
             .fillMaxWidth()
@@ -145,7 +147,7 @@ fun StatusCard(
                 style = MaterialTheme.typography.body1.copy(
                     fontWeight = FontWeight.Bold,
                     fontFamily = gilroy,
-                    color = if(isSystemInDarkTheme()) Color.White else Color.Blue
+                    color = if(isSystemInDarkTheme()) Color.Black else Color.Blue
                 )
             )
 
@@ -160,14 +162,14 @@ fun StatusCard(
                     text = dateTime!!,
                     fontFamily = gilroy,
                     style = MaterialTheme.typography.body2.copy(
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Gray
+                        color = if(isSystemInDarkTheme()) Color.Black else Color.Gray
                     )
                 )
                 Text(
                     text = st,
                     fontFamily = gilroy,
                     style = MaterialTheme.typography.body2.copy(
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Gray
+                        color = if(isSystemInDarkTheme()) Color.Black else Color.Gray
                     )
                 )
             }
@@ -178,7 +180,7 @@ fun StatusCard(
             Text(
                 text = location!!,
                 style = MaterialTheme.typography.body2.copy(
-                    color = if(isSystemInDarkTheme()) Color.White else Color.Gray
+                    color = if(isSystemInDarkTheme()) Color.Black else Color.Gray
                 ),
                 fontFamily = gilroy,
                 maxLines = 1,

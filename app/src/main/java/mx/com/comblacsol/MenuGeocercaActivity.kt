@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -56,8 +58,8 @@ class MenuGeocercaActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(12.dp)
+                .background(Color.White)
+                .padding(top = 48.dp, end = 12.dp, start = 12.dp)
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -70,7 +72,7 @@ class MenuGeocercaActivity : ComponentActivity() {
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Normal,
                         fontFamily = gilroy,
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                        color = Color.Black
                     ),
                     modifier = Modifier
                         .padding(4.dp)
@@ -127,24 +129,39 @@ class MenuGeocercaActivity : ComponentActivity() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(64.dp),
+                            .height(64.dp)
+                            .padding(top = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.End
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(32.dp)
-                                .clickable {
-                                   Intent(this@MenuGeocercaActivity,PrincipalActivity::class.java).also {
-                                       startActivity(it)
-                                   }
-                                }
+                                .fillMaxSize()
+
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.home),
-                                contentDescription = "Home",
-                                modifier = Modifier.fillMaxSize()
-                            )
+
+                            FloatingActionButton(onClick = {
+                                Intent(
+                                    this@MenuGeocercaActivity,
+                                    PrincipalActivity::class.java
+                                ).also {
+                                    startActivity(it)
+                                }
+                            }, modifier = Modifier
+                                .padding(end = 16.dp) // Espaciado entre los botones
+                                .size(48.dp),
+                                shape = CircleShape,
+                                containerColor = Color.Black) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.home),
+                                    contentDescription = "Home",
+                                    modifier = Modifier.fillMaxSize()
+                                        .padding(12.dp),
+                                    tint = Color.White
+                                )
+                            }
+
+
                         }
                     }
 

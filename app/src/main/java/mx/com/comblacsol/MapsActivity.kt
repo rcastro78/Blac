@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +67,7 @@ class MapsActivity : ComponentActivity() {
 
     @Composable
     @Preview(showBackground = true)
-    fun MapScreen(latitud: String?="0.0", longitud: String?="0.0") {
+    fun MapScreen(latitud: String? = "0.0", longitud: String? = "0.0") {
         // Validar latitud y longitud
         if (latitud.isNullOrEmpty() || longitud.isNullOrEmpty()) {
             Log.e("MapScreen", "Latitud o longitud no válidas")
@@ -78,20 +82,24 @@ class MapsActivity : ComponentActivity() {
             position = CameraPosition.fromLatLngZoom(localizacion, 12f)
         }
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(12.dp)){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(top = 72.dp, start = 16.dp, end = 16.dp)
+        ) {
             Spacer(modifier = Modifier.height(12.dp))
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f)
+            ) {
                 Text(
                     text = "Mi unidad",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Normal,
                         fontFamily = gilroy,
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black
+                        color = Color.Black
                     ),
                     modifier = Modifier
                         .padding(4.dp)
@@ -103,16 +111,20 @@ class MapsActivity : ComponentActivity() {
                 val status = intent.getStringExtra("status")
                 val location = intent.getStringExtra("location")
 
-                StatusCard(code = code!!,
+                StatusCard(
+                    code = code!!,
                     dateTime = dateTime!!,
                     status = status!!,
-                    location = location!!)
+                    location = location!!
+                )
 
             }
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.6f)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.6f)
+            ) {
 
                 var mapType by remember { mutableStateOf(MapType.NORMAL) }
 
@@ -139,62 +151,68 @@ class MapsActivity : ComponentActivity() {
 
             }
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.2f),
                 horizontalArrangement = Arrangement.Center, // Centra los elementos horizontalmente
-                verticalAlignment = Alignment.CenterVertically) {
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .padding(bottom = 48.dp),
+                    horizontalArrangement = Arrangement.Center // Distribuye los botones uniformemente
                 ) {
-                    // Imagen de hourglass (Clickable)
-                    Image(
-                        painter = painterResource(id = R.drawable.hourglass),
-                        contentDescription = "Hourglass",
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable {
-                                // Acción del clic
-                                Intent(this@MapsActivity,HistorialMovimientoActivity::class.java).also {
-                                    startActivity(it)
-                                }
+                    FloatingActionButton(
+                        onClick = {
+                            Intent(this@MapsActivity, PrincipalActivity::class.java).also {
+                                startActivity(it)
                             }
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp)) // Espacio entre elementos
-
-                    // Texto: Historial
-                    Text(
-                        text = "Historial",
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = gilroy,
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp)) // Espacio entre elementos
-
-                    // Imagen de redirección a Home (Clickable)
-                    Image(
-                        painter = painterResource(id = R.drawable.home),
-                        contentDescription = "Home",
+                        },
                         modifier = Modifier
-                            .size(32.dp)
-                            .clickable {
-                                // Acción del clic
-                                Log.d("Home", "Home clicked")
+                            .padding(end = 16.dp) // Espaciado entre los botones
+                            .size(48.dp),
+                        shape = CircleShape,
+                        containerColor = Color.Black
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.home),
+                            contentDescription = "Home",
+                            modifier = Modifier.size(32.dp),
+                            colorFilter = ColorFilter.tint(Color.White)
+                        )
+                    }
+
+                    FloatingActionButton(
+                        onClick = {
+                            Intent(this@MapsActivity, HistorialMovimientoActivity::class.java).also {
+                                startActivity(it)
                             }
-                    )
+                        },
+                        modifier = Modifier
+                            .size(48.dp),
+                        shape = CircleShape,
+                        containerColor = Color.Black
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.hourglass),
+                            contentDescription = "Historial",
+                            modifier = Modifier.size(32.dp),
+                            colorFilter = ColorFilter.tint(Color.White)
+                        )
+                    }
+                }
+
+
+
                 }
 
             }
-
         }
 
-
-
     }
-}
+
 

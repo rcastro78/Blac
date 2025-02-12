@@ -10,4 +10,6 @@
     <string name="title_activity_geocerca">GeocercaActivity</string>
     <string name="title_activity_menu_geocerca">MenuGeocercaActivity</string>
     <string name="title_activity_mis_geocercas">MisGeocercasActivity</string>
+    <string name="title_activity_perfil">PerfilActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

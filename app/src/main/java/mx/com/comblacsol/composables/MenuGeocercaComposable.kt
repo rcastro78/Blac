@@ -59,10 +59,11 @@ fun ItemGeocercaComposable(forma:Int = 1,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.colorScheme.background)
+                .background(Color.White)
         ) {
 
-            Column(modifier = Modifier.weight(0.15f)
+            Column(modifier = Modifier
+                .weight(0.15f)
                 .fillMaxSize()
                 .clickable { onItemClick() }
             ) {
@@ -81,13 +82,15 @@ fun ItemGeocercaComposable(forma:Int = 1,
                         painter = painterResource(id = iconRes),
                         tint = Color.Blue,
                         contentDescription = "Forma",
-                        modifier = Modifier.size(48.dp)
+                        modifier = Modifier
+                            .size(48.dp)
                             .padding(12.dp)// Ajusta el tamaño del ícono
                     )
                 }
             }
 
-            Column(modifier = Modifier.weight(0.6f)
+            Column(modifier = Modifier
+                .weight(0.6f)
                 .fillMaxSize()
                 .clickable { onItemClick() }) {
                 Box(
@@ -99,7 +102,7 @@ fun ItemGeocercaComposable(forma:Int = 1,
                         text = nombreGeocerca,
                         modifier = Modifier
                             .padding(start = 12.dp, end = 12.dp),
-                        color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                        color = Color.Black,
                         maxLines = 1,
                         fontFamily = gilroy,
                         fontWeight = FontWeight.Medium,
@@ -110,7 +113,8 @@ fun ItemGeocercaComposable(forma:Int = 1,
             }
 
             Column(
-                modifier = Modifier.weight(0.15f)
+                modifier = Modifier
+                    .weight(0.15f)
                     .fillMaxSize()
             ) {
                 Box(
@@ -123,7 +127,8 @@ fun ItemGeocercaComposable(forma:Int = 1,
                         painter = painterResource(id = R.drawable.basurero),
                         tint = Color.Red,
                         contentDescription = "Forma",
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier
+                            .size(64.dp)
                             .padding(14.dp)// Ajusta el tamaño del ícono
                     )
                 }
